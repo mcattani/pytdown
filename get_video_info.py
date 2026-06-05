@@ -25,7 +25,7 @@ class VideoInfo:
     ext: str        # Extensión del archivo (ej: MP4)
     f_size: str     # Tamaño formateado "Desconocido"
 
-def get_video_info(url: str) -> list[VideoInfo] | None:
+def get_video_info(url: str) -> list[VideoInfo]:
     """
     Obtiene la lista de formatos disponibles que contienen tanto audio como video.
     Toma como argumento la URL del video de YouTube y devuelve una lista de objetos 
@@ -47,11 +47,11 @@ def get_video_info(url: str) -> list[VideoInfo] | None:
             info = ydl.extract_info(url, download=False)
     except DownloadError as e:
         print(f"No se pudo obtener la información del video: {e.msg}")
-        return None
+        return []
   
-    # Si por alguna razón info viene vacío, retornamos None
+    # Si por alguna razón info viene vacío, retornamos una lista vacía
     if not info:
-        return None
+        return []
 
     # Extraemos el título general del video (común a todos los formatos)
     title: str = info.get("title", "Sin título")
@@ -83,13 +83,13 @@ def get_video_info(url: str) -> list[VideoInfo] | None:
                 title=title,
                 calidad=f"{height}p" if height else "N/A",
                 ext=str(formato.get("ext", "N/A")).upper(),
-                f_size= filesize
+                f_size= filesize,
             )
             # Agregamos el objeto a nuestra lista de resultados
             formatos_validos.append(video_info)
     
-    # Retornamos la lista si contiene elementos, de lo contrario None
-    return formatos_validos if formatos_validos else None
+    # Retornamos la lista si contiene elementos, de lo contrario una lista vacía
+    return formatos_validos if formatos_validos else []
 
 if __name__ == "__main__":
     # Bloque de ejecución principal para pruebas manuales    

@@ -1,7 +1,7 @@
 # get_video_info.py
 # Este script se encarga de obtener la información de un video de YouTube utilizando la biblioteca yt_dlp.
 
-from utils import format_size, sanitize_str
+from utils import format_size, sanitize_str, simplify_codec
 from typing import Any
 from dataclasses import dataclass
 from yt_dlp import YoutubeDL
@@ -22,6 +22,8 @@ class FormatInfo:
     calidad: str    # Resolución (ej: 720p)
     ext: str        # Extensión del archivo (ej: MP4)
     f_size: str     # Tamaño formateado "Desconocido"
+    v_codec: str    # Codec de video simplificado
+    a_codec: str    # Codec de audio simplificado
 
 @dataclass
 class VideoInfo:
@@ -88,7 +90,9 @@ def get_video_info(url: str) -> VideoInfo | None:
                 format_id=str(formato.get("format_id", "")),
                 calidad=f"{height}p" if height else "N/A",
                 ext=str(formato.get("ext", "N/A")).upper(),
-                f_size=f_size_str
+                f_size=f_size_str,
+                v_codec=simplify_codec(formato.get("vcodec")),
+                a_codec=simplify_codec(formato.get("acodec"))
             )
             # Agregamos el objeto a nuestra lista de resultados
             formatos_validos.append(format_item)
@@ -107,9 +111,9 @@ if __name__ == "__main__":
     info = get_video_info(URL_PRUEBA)
     if info:
         print(f"Título: {info.title}\n")
-        print(f"{'ID':<10} {'Calidad':<10} {'Ext':<6} {'Tamaño'}")
-        print("-" * 40)
+        print(f"{'ID':<10} {'Calidad':<10} {'Ext':<6} {'V-Codec':<10} {'A-Codec':<10} {'Tamaño'}")
+        print("-" * 75)
         for item in info.formats:
-            print(f"{item.format_id:<10} {item.calidad:<10} {item.ext:<6} {item.f_size}")
+            print(f"{item.format_id:<10} {item.calidad:<10} {item.ext:<6} {item.v_codec:<10} {item.a_codec:<10} {item.f_size}")
     else:
         print("No se encontraron formatos válidos o hubo un error.")

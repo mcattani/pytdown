@@ -30,13 +30,9 @@ class VideoInfo:
 def get_video_info(url: str) -> list[VideoInfo] | None:
     """
     Obtiene la lista de formatos disponibles que contienen tanto audio como video.
+    Toma como argumento la URL del video de YouTube y devuelve una lista de objetos 
+    VideoInfo con los datos relevantes."""
     
-    Args:
-        url: La dirección web del video de YouTube.
-        
-    Returns:
-        Una lista de objetos VideoInfo o None si ocurre un error o no hay formatos válidos.
-    """
     # Configuración de yt_dlp para obtener metadatos sin descargar el video
     ydl_opts: dict[str, Any] = {
         "quiet": True,         # No mostrar mensajes de log en la consola
@@ -93,9 +89,8 @@ def get_video_info(url: str) -> list[VideoInfo] | None:
 if __name__ == "__main__":
     # Bloque de ejecución principal para pruebas manuales
     info = get_video_info(URL_PRUEBA)
-    print(info)
     if info:
         for item in info:
-            print(item)
+            print(item.format_id, item.title, item.calidad, item.ext, item.f_size)
     else:
         print("No se encontraron formatos válidos.")

@@ -36,6 +36,30 @@ def sanitize_str(string: str) -> str:
     clean_name = re.sub(r'\s+', ' ', clean_name).strip()
     return clean_name
 
+def simplify_codec(codec: Any) -> str:
+    """
+    Simplifica el nombre del codec a un formato más amigable.
+    """
+    if not codec or codec == "none":
+        return "N/A"
+    
+    codec_str = str(codec).lower()
+    prefix = codec_str.split(".")[0]
+    
+    # Diccionario de mapeo para codecs conocidos
+    codecs_map: dict[str, str] = {
+        "avc1": "H.264",
+        "vp9": "VP9",
+        "vp09": "VP9",
+        "av01": "AV1",
+        "mp4a": "AAC",
+        "opus": "Opus",
+    }
+    
+    # Si el prefijo está en el diccionario, devolvemos su nombre amigable.
+    # De lo contrario, devolvemos el prefijo en mayúsculas.
+    return codecs_map.get(prefix, prefix.upper())
+
 def func_timer(func: Callable[..., Any]) -> Callable[..., Any]:
     """
     Decorador para medir el tiempo de ejecución de una función.
@@ -62,6 +86,10 @@ if __name__ == "__main__":
     print(f"Prueba Sanitizar 2: '{sanitize_str('   Espacios múltiples    ')}'")
     print(f"Prueba Sanitizar 3: '{sanitize_str('Nombre-Válido_123')}'")
     
+    print(f"Prueba Codec 1 (Video): {simplify_codec('avc1.640028')}")
+    print(f"Prueba Codec 2 (Audio): {simplify_codec('mp4a.40.2')}")
+    print(f"Prueba Codec 3 (Video): {simplify_codec('vp09.00.51.08.01.01.01.01.00')}")
+    
     @func_timer
     def prueba_funcion():
         total: int = 0
@@ -69,8 +97,3 @@ if __name__ == "__main__":
             total += i
     
     prueba_funcion()
-    
-    
-    
-    
-    

@@ -14,23 +14,34 @@ Es necesario para que yt_dlp pueda ejecutar el código JavaScript que algunas p�
 import deno
 
 @dataclass
-class VideoInfo:
+class FormatInfo:
     """
-    Clase de datos (dataclass) para representar de forma estructurada 
-    la información relevante de cada formato de video.
+    Clase de datos para representar la información técnica de un formato específico.
     """
     format_id: str  # ID interno del formato en YouTube
-    title: str      # Título del video
     calidad: str    # Resolución (ej: 720p)
     ext: str        # Extensión del archivo (ej: MP4)
     f_size: str     # Tamaño formateado "Desconocido"
 
-def get_video_info(url: str) -> list[VideoInfo]:
+@dataclass
+class VideoInfo:
     """
-    Obtiene la lista de formatos disponibles que contienen tanto audio como video.
-    Toma como argumento la URL del video de YouTube y devuelve una lista de objetos 
-    VideoInfo con los datos relevantes."""
+    Clase de datos que agrupa el título del video y sus formatos disponibles.
+    """
+    title: str
+    formats: list[FormatInfo]
+
+def get_video_info(url: str) -> VideoInfo | None:
+    """
+    Obtiene la información de un video y la lista de formatos disponibles 
+    que contienen tanto audio como video.
     
+    Args:
+        url: La dirección web del video de YouTube.
+        
+    Returns:
+        Un objeto VideoInfo o None si ocurre un error o no hay formatos válidos.
+    """
     # Configuración de yt_dlp para obtener metadatos sin descargar el video
     ydl_opts: dict[str, Any] = {
         "quiet": True,         # No mostrar mensajes de log en la consola
@@ -47,19 +58,17 @@ def get_video_info(url: str) -> list[VideoInfo]:
             info = ydl.extract_info(url, download=False)
     except DownloadError as e:
         print(f"No se pudo obtener la información del video: {e.msg}")
-        return []
+        return None
   
-    # Si por alguna razón info viene vacío, retornamos una lista vacía
+    # Si por alguna razón info viene vacío, retornamos None
     if not info:
-        return []
+        return None
 
-    # Extraemos el título general del video (común a todos los formatos)
-    title: str = info.get("title", "Sin título")
-    # Sanitizamos el título para eliminar caracteres no válidos en nombres de archivos
-    title = sanitize_str(title)
+    # Extraemos y sanitizamos el título general del video
+    title: str = sanitize_str(info.get("title", "Sin título"))
 
-    # Lista para almacenar los objetos VideoInfo filtrados
-    formatos_validos: list[VideoInfo] = []
+    # Lista para almacenar los objetos FormatInfo filtrados
+    formatos_validos: list[FormatInfo] = []
 
     # 'formats' contiene una lista de diccionarios con cada calidad/tipo disponible
     formatos: list[dict[str, Any]] = info.get("formats", [])
@@ -72,24 +81,24 @@ def get_video_info(url: str) -> list[VideoInfo]:
             # El tamaño puede venir en 'filesize' o 'filesize_approx'
             filesize = formato.get("filesize") or formato.get("filesize_approx")
             # Formateamos el tamaño si lo tenemos, de lo contrario dejamos "Desconocido"
-            if filesize:
-                filesize = format_size(filesize)
-            else:
-                filesize = "Desconocido"
+            f_size_str = format_size(filesize) if filesize else "Desconocido"
             
-            # Creamos una instancia de nuestra clase VideoInfo con los datos procesados
-            video_info = VideoInfo(
+            # Creamos una instancia de FormatInfo con los datos procesados
+            format_item = FormatInfo(
                 format_id=str(formato.get("format_id", "")),
-                title=title,
                 calidad=f"{height}p" if height else "N/A",
                 ext=str(formato.get("ext", "N/A")).upper(),
-                f_size= filesize,
+                f_size=f_size_str
             )
             # Agregamos el objeto a nuestra lista de resultados
-            formatos_validos.append(video_info)
+            formatos_validos.append(format_item)
     
-    # Retornamos la lista si contiene elementos, de lo contrario una lista vacía
-    return formatos_validos if formatos_validos else []
+    # Si no se encontraron formatos válidos, retornamos None
+    if not formatos_validos:
+        return None
+        
+    # Retornamos el objeto consolidado VideoInfo
+    return VideoInfo(title=title, formats=formatos_validos)
 
 if __name__ == "__main__":
     # Bloque de ejecución principal para pruebas manuales    
@@ -97,7 +106,10 @@ if __name__ == "__main__":
 
     info = get_video_info(URL_PRUEBA)
     if info:
-        for item in info:
-            print(item.format_id, item.title, item.calidad, item.ext, item.f_size)
+        print(f"Título: {info.title}\n")
+        print(f"{'ID':<10} {'Calidad':<10} {'Ext':<6} {'Tamaño'}")
+        print("-" * 40)
+        for item in info.formats:
+            print(f"{item.format_id:<10} {item.calidad:<10} {item.ext:<6} {item.f_size}")
     else:
-        print("No se encontraron formatos válidos.")
+        print("No se encontraron formatos válidos o hubo un error.")

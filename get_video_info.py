@@ -1,6 +1,7 @@
 # get_video_info.py
 # Este script se encarga de obtener la información de un video de YouTube utilizando la biblioteca yt_dlp.
 
+from utils import format_size, sanitize_str
 from typing import Any
 from dataclasses import dataclass
 from yt_dlp import YoutubeDL
@@ -11,9 +12,6 @@ Es necesario para que yt_dlp pueda ejecutar el código JavaScript que algunas p�
 (como YouTube) usan para generar los enlaces de descarga reales.
 """
 import deno
-
-# URL de prueba para verificar el funcionamiento del script
-URL_PRUEBA: str = "https://www.youtube.com/watch?v=szqFrpNf8yA&t=5153s"
 
 @dataclass
 class VideoInfo:
@@ -57,6 +55,8 @@ def get_video_info(url: str) -> list[VideoInfo] | None:
 
     # Extraemos el título general del video (común a todos los formatos)
     title: str = info.get("title", "Sin título")
+    # Sanitizamos el título para eliminar caracteres no válidos en nombres de archivos
+    title = sanitize_str(title)
 
     # Lista para almacenar los objetos VideoInfo filtrados
     formatos_validos: list[VideoInfo] = []
@@ -71,6 +71,11 @@ def get_video_info(url: str) -> list[VideoInfo] | None:
             height = formato.get("height")
             # El tamaño puede venir en 'filesize' o 'filesize_approx'
             filesize = formato.get("filesize") or formato.get("filesize_approx")
+            # Formateamos el tamaño si lo tenemos, de lo contrario dejamos "Desconocido"
+            if filesize:
+                filesize = format_size(filesize)
+            else:
+                filesize = "Desconocido"
             
             # Creamos una instancia de nuestra clase VideoInfo con los datos procesados
             video_info = VideoInfo(
@@ -78,7 +83,7 @@ def get_video_info(url: str) -> list[VideoInfo] | None:
                 title=title,
                 calidad=f"{height}p" if height else "N/A",
                 ext=str(formato.get("ext", "N/A")).upper(),
-                f_size= filesize if filesize else "Desconocido"
+                f_size= filesize
             )
             # Agregamos el objeto a nuestra lista de resultados
             formatos_validos.append(video_info)
@@ -87,7 +92,9 @@ def get_video_info(url: str) -> list[VideoInfo] | None:
     return formatos_validos if formatos_validos else None
 
 if __name__ == "__main__":
-    # Bloque de ejecución principal para pruebas manuales
+    # Bloque de ejecución principal para pruebas manuales    
+    URL_PRUEBA: str = "https://www.youtube.com/watch?v=szqFrpNf8yA&t=5153s"
+
     info = get_video_info(URL_PRUEBA)
     if info:
         for item in info:

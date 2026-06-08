@@ -54,7 +54,8 @@ def download_video(url: str, format_id: str) -> bool:
     """
     # Solicitamos la carpeta destino y validamos
     download_dir = select_download_folder()
-    if not download_dir: return False
+    if not download_dir: 
+        return False
     
     # Definimos cómo se verá la barra de progreso
     progress = Progress(
@@ -110,7 +111,7 @@ def download_video(url: str, format_id: str) -> bool:
             with YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
         return True
-    # Captura evento de tecaldo (usuario hace ctrl+c para cancelar)
+    # Si el usuario cancela (ctrl+c)
     except KeyboardInterrupt:
         console.print("\n[yellow]Descarga cancelada por el usuario.[/yellow]")
         return False

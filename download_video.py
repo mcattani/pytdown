@@ -14,6 +14,9 @@ from rich.progress import (
     DownloadColumn,
     TextColumn,
 )
+from rich.console import Console
+
+console = Console()
 
 def select_download_folder() -> str | None:
     """
@@ -36,7 +39,6 @@ def select_download_folder() -> str | None:
     
     # Devuelve la carpeta elegida o none si el usuario cancela
     return folder or None
-
 
 def download_video(url: str, format_id: str) -> bool:
     """
@@ -108,8 +110,17 @@ def download_video(url: str, format_id: str) -> bool:
             with YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
         return True
+    # Captura evento de tecaldo (usuario hace ctrl+c para cancelar)
+    except KeyboardInterrupt:
+        console.print("\n[yellow]Descarga cancelada por el usuario.[/yellow]")
+        return False
+    # Captura error en descarga
     except DownloadError as e:
-        print(f"Error al descargar el video: {e}")
+        console.print(f"[red]Error al descargar el video:[/red] {e}")
+        return False
+    # Captura otros errores
+    except Exception as e:
+        console.print(f"[red]Error al descargar el archivo:[/red] {e}")
         return False
 
 if __name__ == "__main__":

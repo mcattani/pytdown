@@ -106,7 +106,7 @@ def get_video_info(url: str) -> VideoInfo | None:
 
 if __name__ == "__main__":
     # Bloque de ejecución principal para pruebas manuales    
-    URL_PRUEBA: str = "https://www.youtube.com/watch?v=wxaXWSVhRXU"
+    URL_PRUEBA: str = "https://www.youtube.com/watch?v=sPQhTXeoiw0"
 
     info = get_video_info(URL_PRUEBA)
     if info:

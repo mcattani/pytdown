@@ -127,7 +127,7 @@ if __name__ == "__main__":
     # Bloque de ejecución principal para pruebas manuales    
     #print(select_download_folder())
     
-    URL_PRUEBA: str = "https://www.youtube.com/watch?v=wxaXWSVhRXU"
+    URL_PRUEBA: str = "https://www.youtube.com/watch?v=sPQhTXeoiw0"
     download_video(URL_PRUEBA, "18")
     
     

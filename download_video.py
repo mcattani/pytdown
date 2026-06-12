@@ -129,6 +129,6 @@ if __name__ == "__main__":
     #print(select_download_folder())
     
     URL_PRUEBA: str = "https://www.youtube.com/watch?v=sPQhTXeoiw0"
-    download_video(URL_PRUEBA, "18")
+    download_video(URL_PRUEBA, "96")
     
     

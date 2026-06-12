@@ -44,9 +44,10 @@ Una herramienta de línea de comandos (CLI) para la descarga de videos de YouTub
    ```bash
    python -m venv .venv
    source .venv/bin/activate  # En Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
+   pip install .
    ```
-   *Nota: Asegúrese de tener instalados `yt-dlp`, `rich` y el wrapper de `deno` para Python.*
+   *Nota: Si utilizas [uv](https://github.com/astral-sh/uv), puedes simplemente ejecutar `uv sync`.*
+   *Asegúrese de tener instalados `yt-dlp`, `rich` y el runtime de `deno`.*
 
 ## Uso
 

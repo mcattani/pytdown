@@ -6,12 +6,15 @@ from typing import Any
 from dataclasses import dataclass
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
+from rich.console import Console
 """
 Importamos Deno (entorno de ejecución (runtime) para JavaScript).
 Es necesario para que yt_dlp pueda ejecutar el código JavaScript que algunas páginas 
 (como YouTube) usan para generar los enlaces de descarga reales.
 """
 import deno
+
+console = Console()
 
 @dataclass
 class FormatInfo:
@@ -59,7 +62,7 @@ def get_video_info(url: str) -> VideoInfo | None:
             # download=False asegura que no se empiece a descargar el archivo
             info = ydl.extract_info(url, download=False)
     except DownloadError as e:
-        print(f"No se pudo obtener la información del video: {e.msg}")
+        console.print(f"[red]No se pudo obtener la información del video:[/red] {e.msg}")
         return None
   
     # Si por alguna razón info viene vacío, retornamos None
@@ -110,10 +113,11 @@ if __name__ == "__main__":
 
     info = get_video_info(URL_PRUEBA)
     if info:
-        print(f"Título: {info.title}\n")
-        print(f"{'ID':<10} {'Calidad':<10} {'Ext':<6} {'V-Codec':<10} {'A-Codec':<10} {'Tamaño'}")
-        print("-" * 75)
+        console.print(f"[bold blue]Título:[/bold blue] {info.title}\n")
+        console.print(f"{'ID':<10} {'Calidad':<10} {'Ext':<6} {'V-Codec':<10} {'A-Codec':<10} {'Tamaño'}")
+        console.print("-" * 75)
         for item in info.formats:
-            print(f"{item.format_id:<10} {item.calidad:<10} {item.ext:<6} {item.v_codec:<10} {item.a_codec:<10} {item.f_size}")
+            console.print(f"{item.format_id:<10} {item.calidad:<10} {item.ext:<6} {item.v_codec:<10} {item.a_codec:<10} {item.f_size}")
     else:
-        print("No se encontraron formatos válidos o hubo un error.")
+        console.print("[red]No se encontraron formatos válidos o hubo un error.[/red]")
+

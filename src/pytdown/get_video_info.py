@@ -1,7 +1,7 @@
 # get_video_info.py
 # Este script se encarga de obtener la información de un video de YouTube utilizando la biblioteca yt_dlp.
 
-from utils import format_size, sanitize_str, simplify_codec
+from pytdown.utils import format_size, sanitize_str, simplify_codec
 from typing import Any
 from dataclasses import dataclass
 from yt_dlp import YoutubeDL

@@ -1,7 +1,7 @@
 [project]
-name = "youtube-downloader"
-version = "0.1.0"
-description = "Script para descargar videos de YouTube"
+name = "pytdown"
+version = "0.2.0"
+description = "Interfaz de línea de comandos para descargar videos de YouTube utilizando yt-dlp."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -11,4 +11,11 @@ dependencies = [
 ]
 
 [project.scripts]
-pytdown = "main:main"
+pytdown = "pytdown.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pytdown"]

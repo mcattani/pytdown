@@ -2,12 +2,12 @@ from rich.console import Console
 from rich.table import Table
 from rich.prompt import Prompt
 
-from get_video_info import get_video_info, VideoInfo
-from download_video import download_video
+from pytdown.get_video_info import get_video_info, VideoInfo
+from pytdown.download_video import download_video
 
 console = Console()
 
-def main():
+def run_app():
     url = Prompt.ask("[bold green]Introduce la URL del video[/bold green]")
     
     # Validación básica de URL
@@ -54,9 +54,12 @@ def main():
     else:
         console.print("\n[bold red]La descarga no se completó.[/bold red]")
 
-if __name__ == "__main__":
+def main():
     try:
-        main()
+        run_app()
     except KeyboardInterrupt:
         console.print("\n[bold red]Programa terminado por el usuario.[/bold red]")
+
+if __name__ == "__main__":
+    main()
     

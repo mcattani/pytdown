@@ -5,68 +5,80 @@
 [![Rich](https://img.shields.io/badge/UI-Rich-green)](https://github.com/Textualize/rich)
 [![Licencia](https://img.shields.io/badge/licencia-GPL--3.0-blue)](LICENSE)
 
-Una herramienta de línea de comandos (CLI) para la descarga de videos de YouTube con selección de formatos de alta calidad. Desarrollada con Python 3.13, `yt-dlp` y `rich`.
+Una herramienta de línea de comandos (CLI) moderna y potente para descargar videos de YouTube con selección de formatos de alta calidad. Ahora distribuida como un paquete de Python instalable.
 
 ## Características Principales
 
-- **Arquitectura Modular:** Lógica separada en módulos específicos para la extracción de metadatos, gestión de descargas y funciones de utilidad.
+- **Paquete Instalable:** Se integra en tu sistema como un comando global (`pytdown`).
 - **Interfaz Enriquecida:** Tablas interactivas y barras de progreso dinámicas mediante la librería `Rich`.
-- **Validación de Entradas:** Validación de URLs y selección de formatos restringida a opciones válidas para evitar errores de ejecución.
-- **Integración con Deno:** Utiliza el runtime de `Deno` para la interpretación avanzada de JavaScript requerida por las plataformas de streaming modernas.
-- **Utilidades Portátiles:** Módulo `utils.py` independiente para la sanitización de cadenas y formateo, con cero dependencias externas.
+- **Validación Inteligente:** Selección de formatos restringida a opciones válidas para garantizar descargas exitosas (audio + video.
+- **Integración con Deno:** Utiliza el runtime de `Deno` para la interpretación avanzada de JavaScript requerida por YouTube.
+- **Arquitectura Robusta:** Estructura de proyecto `src/` siguiendo los estándares modernos de Python.
 
 ## Estructura del Proyecto
 
 ```text
 .
-├── main.py              # Punto de entrada y gestión de la interacción con el usuario
-├── get_video_info.py    # Extracción de metadatos y filtrado de formatos
-├── download_video.py    # Lógica de descarga e implementación de hooks de progreso
-├── utils.py             # Funciones auxiliares reutilizables (Sin dependencias)
-└── pyproject.toml       # Metadatos del proyecto y dependencias
+├── src/
+│   └── pytdown/         # Código fuente del paquete
+│       ├── main.py          # Punto de entrada y CLI logic
+│       ├── get_video_info.py# Extracción de metadatos
+│       ├── download_video.py# Gestión de descargas
+│       └── utils.py         # Funciones auxiliares
+├── pyproject.toml       # Definición del paquete y dependencias
+└── uv.lock              # Lockfile para reproducibilidad (uv)
 ```
 
 ## Requisitos Previos
 
 - **Python 3.13 o superior**
-- **Deno:** Requerido como runtime de JavaScript para `yt-dlp`.
+- **Deno:** Necesario para que `yt-dlp` procese los scripts de YouTube. Puedes instalarlo desde [deno.com](https://deno.com/).
 
 ## Instalación
 
-1. **Clonar el repositorio:**
-   ```bash
-   git clone [URL DEL REPOSITORIO AQUÍ]
-   cd youtube-downloader
-   ```
+### Opción A: Usando [uv](https://github.com/astral-sh/uv) (Recomendado)
 
-2. **Instalar dependencias:**
-   Se recomienda el uso de un entorno virtual:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # En Windows: .venv\Scripts\activate
-   pip install .
-   ```
-   *Nota: Si utilizas [uv](https://github.com/astral-sh/uv), puedes simplemente ejecutar `uv sync`.*
-   *Asegúrese de tener instalados `yt-dlp`, `rich` y el runtime de `deno`.*
+Si eres desarrollador o quieres la mejor experiencia:
+
+```bash
+# Clonar e instalar dependencias
+git clone [URL DEL REPOSITORIO]
+cd youtube_downloader
+uv sync
+
+# Ejecutar sin instalar globalmente
+uv run pytdown
+
+# O instalar como herramienta global en tu sistema
+uv tool install .
+```
+
+### Opción B: Usando pip (Tradicional)
+
+```bash
+git clone [URL DEL REPOSITORIO]
+cd youtube_downloader
+pip install .
+```
 
 ## Uso
 
-Ejecute el script principal para iniciar la interfaz interactiva:
+Una vez instalado, simplemente ejecuta el comando desde cualquier terminal:
 
 ```bash
-python main.py
+pytdown
 ```
 
-1. **Introducir URL:** Proporcione una URL válida de un video de YouTube.
-2. **Selección de Formato:** Elija un ID de formato de la tabla generada (restringido a opciones válidas).
-3. **Selección de Directorio:** Se abrirá un selector de carpetas nativo para elegir el destino.
-4. **Monitorizar Progreso:** Siga el estado de la descarga a través de la barra de progreso en la CLI.
+1. **Introducir URL:** Pega la URL del video.
+2. **Seleccionar Formato:** Elige el ID de la tabla de calidades disponibles.
+3. **Destino:** Selecciona la carpeta de descarga (se abrirá un selector nativo).
+4. **Progreso:** Visualiza la descarga en tiempo real con la barra de progreso.
 
-## Notas Técnicas
+## Desarrollo
 
-- **Filtrado de Metadatos:** El script filtra automáticamente los formatos que contienen pistas de video y audio combinadas para mayor simplicidad.
-- **Sanitización:** Los nombres de archivo se sanitizan automáticamente para garantizar la compatibilidad con sistemas de archivos Windows, macOS y Linux.
-- **Manejo de Errores:** Bloques `try-except` exhaustivos para gestionar problemas de red, errores específicos de `yt-dlp` y cancelaciones del usuario (Ctrl+C).
+Para contribuir o modificar el proyecto:
+1. Crea un entorno virtual con `uv venv` o `python -m venv .venv`.
+2. Las dependencias se gestionan a través de `pyproject.toml`. No se requiere `requirements.txt`.
 
 ---
 

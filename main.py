@@ -55,4 +55,8 @@ def main():
         console.print("\n[bold red]La descarga no se completó.[/bold red]")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print("\n[bold red]Programa terminado por el usuario.[/bold red]")
+    

@@ -28,6 +28,7 @@ def run_app():
     table = Table(title="Formatos disponibles (Video + Audio)")
     table.add_column("ID", style="cyan")
     table.add_column("Calidad", style="magenta")
+    table.add_column("FPS", justify="center")
     table.add_column("Ext", style="green")
     table.add_column("V-Codec")
     table.add_column("A-Codec")
@@ -36,7 +37,15 @@ def run_app():
     # Guardamos los IDs válidos para validar la entrada después
     valid_ids: list[str] = []
     for item in video.formats:
-        table.add_row(item.format_id, item.calidad, item.ext, item.v_codec, item.a_codec, item.f_size)
+        table.add_row(
+            item.format_id, 
+            item.calidad, 
+            str(item.fps) if item.fps > 0 else "N/A",
+            item.ext, 
+            item.v_codec, 
+            item.a_codec, 
+            item.f_size
+        )
         valid_ids.append(item.format_id)
         
     console.print(table)

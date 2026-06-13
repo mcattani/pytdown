@@ -29,6 +29,7 @@ def run_app():
     table.add_column("ID", style="cyan")
     table.add_column("Calidad", style="magenta")
     table.add_column("FPS", justify="center")
+    table.add_column("Lang", style="yellow")
     table.add_column("Ext", style="green")
     table.add_column("V-Codec")
     table.add_column("A-Codec")
@@ -41,6 +42,7 @@ def run_app():
             item.format_id, 
             item.calidad, 
             str(item.fps) if item.fps > 0 else "N/A",
+            item.idioma,
             item.ext, 
             item.v_codec, 
             item.a_codec, 

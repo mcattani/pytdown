@@ -24,6 +24,7 @@ class FormatInfo:
     format_id: str  # ID interno del formato en YouTube
     calidad: str    # Resolución (ej: 720p)
     fps: int        # Cuadros por segundo
+    idioma: str     # Código de idioma (ej: en, es)
     ext: str        # Extensión del archivo (ej: MP4)
     f_size: str     # Tamaño formateado "Desconocido"
     v_codec: str    # Codec de video simplificado
@@ -73,14 +74,23 @@ def get_video_info(url: str) -> VideoInfo | None:
     # Extraemos y sanitizamos el título general del video
     title: str = sanitize_str(info.get("title", "Sin título"))
 
+    # 'formats' contiene una lista de diccionarios con cada calidad/tipo disponible
+    formatos: list[dict[str, Any]] = info.get("formats", [])
+
+    # PRIORIZACIÓN: Ordenamos para que las versiones originales o con mayor preferencia de idioma
+    # aparezcan primero. Así, al deduplicar, nos quedaremos con la mejor versión.
+    def sort_criteria(f):
+        lang_pref = f.get("language_preference") or 0
+        is_original = 1 if "original" in str(f.get("format_note", "")).lower() else 0
+        return (lang_pref, is_original)
+
+    formatos.sort(key=sort_criteria, reverse=True)
+
     # Lista para almacenar los objetos FormatInfo filtrados
     formatos_validos: list[FormatInfo] = []
     # Conjunto para llevar control de lo que ya hemos añadido y evitar duplicados
     vistos: set[tuple[Any, Any, Any, Any, Any]] = set()
 
-    # 'formats' contiene una lista de diccionarios con cada calidad/tipo disponible
-    formatos: list[dict[str, Any]] = info.get("formats", [])
-    
     for formato in formatos:
         # Filtramos: solo nos interesan formatos que tengan pista de video Y audio juntas
         vcodec = formato.get("vcodec")
@@ -93,24 +103,31 @@ def get_video_info(url: str) -> VideoInfo | None:
             v_codec_simple = simplify_codec(vcodec)
             a_codec_simple = simplify_codec(acodec)
 
-            # Creamos una tupla con los datos de la lista de formatos para evitar la duplicación
-            lista_formatos = (height, ext, v_codec_simple, a_codec_simple, fps)
+            # Crear huella digital para deduplicar (por ahora no incluimos idioma en la huella
+            # para que solo se quede con una versión de cada resolución - la original)
+            huella = (height, ext, v_codec_simple, a_codec_simple, fps)
 
-            if lista_formatos in vistos:
+            if huella in vistos:
                 continue
             
-            vistos.add(lista_formatos)
+            vistos.add(huella)
 
             # El tamaño puede venir en 'filesize' o 'filesize_approx'
             filesize = formato.get("filesize") or formato.get("filesize_approx")
             # Formateamos el tamaño si lo tenemos, de lo contrario dejamos "Desconocido"
             f_size_str = format_size(filesize) if filesize else "Desconocido"
             
+            # Capturar el idioma si está disponible
+            lang = formato.get("language") or "N/A"
+            # Limpiar códigos largos (ej: en-US -> en)
+            lang_short = lang.split("-")[0]
+
             # Creamos una instancia de FormatInfo con los datos procesados
             format_item = FormatInfo(
                 format_id=str(formato.get("format_id", "")),
                 calidad=f"{height}p" if height else "N/A",
                 fps=int(fps) if fps else 0,
+                idioma=lang_short,
                 ext=str(ext if ext else "N/A").upper(),
                 f_size=f_size_str,
                 v_codec=v_codec_simple,
@@ -133,10 +150,10 @@ if __name__ == "__main__":
     info = get_video_info(URL_PRUEBA)
     if info:
         console.print(f"[bold blue]Título:[/bold blue] {info.title}\n")
-        console.print(f"{'ID':<10} {'Calidad':<10} {'FPS':<6} {'Ext':<6} {'V-Codec':<10} {'A-Codec':<10} {'Tamaño'}")
-        console.print("-" * 85)
+        console.print(f"{'ID':<10} {'Calidad':<10} {'FPS':<6} {'Lang':<6} {'Ext':<6} {'V-Codec':<10} {'A-Codec':<10} {'Tamaño'}")
+        console.print("-" * 95)
         for item in info.formats:
             fps_str = str(item.fps) if item.fps > 0 else "N/A"
-            console.print(f"{item.format_id:<10} {item.calidad:<10} {fps_str:<6} {item.ext:<6} {item.v_codec:<10} {item.a_codec:<10} {item.f_size}")
+            console.print(f"{item.format_id:<10} {item.calidad:<10} {fps_str:<6} {item.idioma:<6} {item.ext:<6} {item.v_codec:<10} {item.a_codec:<10} {item.f_size}")
     else:
         console.print("[red]No se encontraron formatos válidos o hubo un error.[/red]")

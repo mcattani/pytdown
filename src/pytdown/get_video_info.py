@@ -77,14 +77,23 @@ def get_video_info(url: str) -> VideoInfo | None:
     # 'formats' contiene una lista de diccionarios con cada calidad/tipo disponible
     formatos: list[dict[str, Any]] = info.get("formats", [])
 
-    # PRIORIZACIÓN: Ordenamos para que las versiones originales o con mayor preferencia de idioma
-    # aparezcan primero. Así, al deduplicar, nos quedaremos con la mejor versión.
-    def sort_criteria(f):
-        lang_pref = f.get("language_preference") or 0
-        is_original = 1 if "original" in str(f.get("format_note", "")).lower() else 0
-        return (lang_pref, is_original)
+    def criterio_de_orden(f: dict[str, Any]) -> tuple[int, int]:
+        """
+        Define la prioridad de un formato basándose en el idioma.
+        Retornamos una tupla (preferencia, es_original) para que el script
+        pueda ordenar de mayor a mayor prioridad.
+        """
+        # Preferencia de idioma (asignada por YouTube)
+        pref = f.get("language_preference") or 0
+        
+        # Indica si es original o no
+        nota = str(f.get("format_note", "")).lower()
+        es_original = 1 if "original" in nota else 0
+        
+        return (pref, es_original)
 
-    formatos.sort(key=sort_criteria, reverse=True)
+    # Ordenamos de mayor a mayor prioridad (reverse=True)
+    formatos.sort(key=criterio_de_orden, reverse=True)
 
     # Lista para almacenar los objetos FormatInfo filtrados
     formatos_validos: list[FormatInfo] = []
@@ -103,14 +112,14 @@ def get_video_info(url: str) -> VideoInfo | None:
             v_codec_simple = simplify_codec(vcodec)
             a_codec_simple = simplify_codec(acodec)
 
-            # Crear huella digital para deduplicar (por ahora no incluimos idioma en la huella
-            # para que solo se quede con una versión de cada resolución - la original)
-            huella = (height, ext, v_codec_simple, a_codec_simple, fps)
+            # Identificador técnico único para evitar mostrar formatos repetidos.
+            # Incluimos los FPS para que el usuario pueda elegir entre 30fps, 60fps, etc.
+            id_tecnico = (height, ext, v_codec_simple, a_codec_simple, fps)
 
-            if huella in vistos:
+            if id_tecnico in vistos:
                 continue
             
-            vistos.add(huella)
+            vistos.add(id_tecnico)
 
             # El tamaño puede venir en 'filesize' o 'filesize_approx'
             filesize = formato.get("filesize") or formato.get("filesize_approx")

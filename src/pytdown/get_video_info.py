@@ -23,7 +23,7 @@ class FormatInfo:
     """
     format_id: str  # ID interno del formato en YouTube
     calidad: str    # Resolución (ej: 720p)
-    fps: int        # Cuadros por segundo
+    fps: int | None # Cuadros por segundo
     idioma: str     # Código de idioma (ej: en, es)
     ext: str        # Extensión del archivo (ej: MP4)
     f_size: str     # Tamaño formateado "Desconocido"
@@ -40,8 +40,9 @@ class VideoInfo:
 
 def get_video_info(url: str) -> VideoInfo | None:
     """
-    Obtiene la información de un video y la lista de formatos disponibles 
-    que contienen tanto audio como video.
+    Obtiene la información de un video y los formatos de video disponibles.
+    Los formatos pueden contener audio integrado o requerir una pista de audio
+    adicional durante la descarga.
     
     Args:
         url: La dirección web del video de YouTube.
@@ -101,11 +102,12 @@ def get_video_info(url: str) -> VideoInfo | None:
     vistos: set[tuple[Any, Any, Any, Any, Any]] = set()
 
     for formato in formatos:
-        # Filtramos: solo nos interesan formatos que tengan pista de video Y audio juntas
+        # Filtramos: solo nos interesan formatos que contengan video.
+        # Los formatos de audio solamente (vcodec="none") se descartan.
         vcodec = formato.get("vcodec")
         acodec = formato.get("acodec")
 
-        if vcodec != "none" and acodec != "none":
+        if vcodec != "none":
             height = formato.get("height")
             ext = formato.get("ext")
             fps = formato.get("fps")
@@ -130,12 +132,13 @@ def get_video_info(url: str) -> VideoInfo | None:
             lang = formato.get("language") or "N/A"
             # Limpiar códigos largos (ej: en-US -> en)
             lang_short = lang.split("-")[0]
-
+        
+                       
             # Creamos una instancia de FormatInfo con los datos procesados
             format_item = FormatInfo(
                 format_id=str(formato.get("format_id", "")),
                 calidad=f"{height}p" if height else "N/A",
-                fps=int(fps) if fps else 0,
+                fps=int(fps) if fps else None,
                 idioma=lang_short,
                 ext=str(ext if ext else "N/A").upper(),
                 f_size=f_size_str,

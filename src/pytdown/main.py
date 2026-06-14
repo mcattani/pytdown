@@ -41,7 +41,7 @@ def run_app():
         table.add_row(
             item.format_id, 
             item.calidad, 
-            str(item.fps) if item.fps > 0 else "N/A",
+            str(item.fps) if item.fps is not None else "N/A",
             item.idioma,
             item.ext, 
             item.v_codec, 

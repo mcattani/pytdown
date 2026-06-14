@@ -5,6 +5,7 @@ import re
 import time
 from functools import wraps 
 from typing import Callable, Any
+from shutil import which
 
 def format_size(bytes_size: int) -> str:
     """
@@ -74,6 +75,13 @@ def func_timer(func: Callable[..., Any]) -> Callable[..., Any]:
         return result
     return wrapper
 
+def check_ffmpeg() -> bool:
+    """
+    Comprueba si ffmpeg está instalado en el sistema.
+    """
+    return which("ffmpeg") is not None
+    
+
 if __name__ == "__main__":
     # Bloque de ejecución principal para pruebas manuales
     
@@ -97,3 +105,5 @@ if __name__ == "__main__":
             total += i
     
     prueba_funcion()
+    
+    print(f"Prueba ffmpeg: {check_ffmpeg()}")

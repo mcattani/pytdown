@@ -7,7 +7,6 @@ from pytdown.download_video import download_video
 
 from pytdown.utils import check_ffmpeg
 
-
 console = Console()
 
 def run_app():
@@ -22,7 +21,6 @@ def run_app():
     
     # Si no se pudo obtener la información del video, no continuamos
     if not video: 
-        # El error específico ya se imprime dentro de get_video_info
         return
 
     console.print(f"\n[bold blue]Título:[/bold blue] {video.title}")
@@ -32,20 +30,18 @@ def run_app():
     table.add_column("ID", style="cyan")
     table.add_column("Calidad", style="magenta")
     table.add_column("FPS", justify="center")
-    table.add_column("Lang", style="yellow")
     table.add_column("Ext", style="green")
     table.add_column("V-Codec")
     table.add_column("A-Codec")
     table.add_column("Tamaño", justify="right")
     
-    # Guardamos los IDs válidos para validar la entrada después
+    # Guardamos los IDs válidos para validar la entrada
     valid_ids: list[str] = []
     for item in video.formats:
         table.add_row(
             item.format_id, 
             item.calidad, 
             str(item.fps) if item.fps is not None else "N/A",
-            item.idioma,
             item.ext, 
             item.v_codec, 
             item.a_codec, 
@@ -55,27 +51,28 @@ def run_app():
         
     console.print(table)
     
-    # Usamos choices para que rich valide que el ID sea uno de la lista
     format_id: str = Prompt.ask(
         "[bold green]Seleccione el ID del formato[/bold green]",
         choices=valid_ids,
         show_choices=False
     )
     
-    # Buscar el formato seleccionado y comprobar si requiere FFmpeg
     selected_format: FormatInfo | None = None
+    
+    # Buscamos el formato seleccionado
     for item in video.formats:
         if item.format_id == format_id:
             selected_format = item
             break
     
+    # Comprobamos si es necesario ffmpeg para descargar el formato
     if selected_format and not selected_format.has_audio:
         if not check_ffmpeg():
             console.print("[red]No se encontró ffmpeg en el sistema. Es necesario para descargar este formato.[/red]")
             return
         
-    # Descargar el video y dar feedback final
-    if download_video(url, format_id):
+    # Descargar el video pasando el idioma original
+    if download_video(url, format_id, video.original_lang):
         console.print("\n[bold green]Descarga completada[/bold green]")
     else:
         console.print("\n[bold red]La descarga no se completó.[/bold red]")
@@ -88,4 +85,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    

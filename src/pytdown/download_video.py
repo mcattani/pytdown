@@ -40,13 +40,14 @@ def select_download_folder() -> str | None:
     # Devuelve la carpeta elegida o none si el usuario cancela
     return folder or None
 
-def download_video(url: str, format_id: str) -> bool:
+def download_video(url: str, format_id: str, original_lang: str | None = None) -> bool:
     """
     Descarga un video usando yt-dlp.
 
     Parámetros:
         url: URL del video
         format_id: ID del formato elegido
+        original_lang: Código del idioma original del video (opcional)
 
     Devuelve:
         True  -> descarga exitosa
@@ -95,9 +96,16 @@ def download_video(url: str, format_id: str) -> bool:
                 total = data.get("total_bytes") or data.get("downloaded_bytes")
                 progress.update(task_id, description="Completado", completed=total, total=total)
 
+    # Prioriza el audio que coincida con el idioma original
+    # Si tenemos el código de idioma, forzamos a yt-dlp a buscar esa pista primero.
+    if original_lang:
+        format_spec = f"{format_id}+bestaudio[language={original_lang}]/bestaudio/best"
+    else:
+        format_spec = f"{format_id}+bestaudio/best"
+
     # Configuramos yt-dlp
     ydl_opts: dict[str, Any]= {
-        "format": f"{format_id}+bestaudio/best",
+        "format": format_spec,
         "outtmpl": str(Path(download_dir) / "%(title)s.%(ext)s"),
         "progress_hooks": [progress_hook],
         "js_runtimes": {"deno": {"path": deno.find_deno_bin()}},
@@ -129,6 +137,4 @@ if __name__ == "__main__":
     #print(select_download_folder())
     
     URL_PRUEBA: str = "https://www.youtube.com/watch?v=sPQhTXeoiw0"
-    download_video(URL_PRUEBA, "96")
-    
-    
+    download_video(URL_PRUEBA, "137", "es")

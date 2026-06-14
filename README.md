@@ -5,7 +5,7 @@
 [![Rich](https://img.shields.io/badge/UI-Rich-green)](https://github.com/Textualize/rich)
 [![Licencia](https://img.shields.io/badge/licencia-GPL--3.0-blue)](LICENSE)
 
-Una herramienta de línea de comandos (CLI) moderna y potente para descargar videos de YouTube con selección de formatos de alta calidad. Ahora distribuida como un paquete de Python instalable.
+Una herramienta de línea de comandos (CLI) para descargar videos de YouTube con selección de formatos. Distribuida como un paquete de Python instalable.
 
 ## Características Principales
 
@@ -14,33 +14,31 @@ Una herramienta de línea de comandos (CLI) moderna y potente para descargar vid
 - **Idioma:** Filtra y selecciona automáticamente el **lenguaje original** del video, ignorando traducciones o doblajes.
 - **Validación Inteligente:** Selección de formatos restringida a opciones válidas para garantizar descargas exitosas.
 - **Integración con Deno:** Utiliza el runtime de `Deno` para la interpretación avanzada de JavaScript requerida por YouTube.
-- **Arquitectura Robusta:** Estructura de proyecto `src/` siguiendo los estándares modernos de Python.
 
 ## Estructura del Proyecto
 
 ```text
 .
 ├── src/
-│   └── pytdown/         # Código fuente del paquete
-│       ├── main.py          # Punto de entrada y CLI logic
-│       ├── get_video_info.py# Extracción de metadatos
-│       ├── download_video.py# Gestión de descargas
-│       └── utils.py         # Funciones auxiliares
-├── pyproject.toml       # Definición del paquete y dependencias
-└── uv.lock              # Lockfile para reproducibilidad (uv)
+│   └── pytdown/          # Código fuente del paquete
+│       ├── main.py           # Punto de entrada y CLI logic
+│       ├── get_video_info.py # Extracción de metadatos
+│       ├── download_video.py # Gestión de descargas
+│       └── utils.py          # Funciones auxiliares
+├── pyproject.toml        # Definición del paquete y dependencias
+└── uv.lock               # Lockfile para reproducibilidad (uv)
 ```
 
 ## Requisitos Previos
 
 - **Python 3.13 o superior**
 - **Deno:** Necesario para que `yt-dlp` procese los scripts de YouTube. Puedes instalarlo desde [deno.com](https://deno.com/).
-- **FFmpeg (Recomendado):** Necesario para descargar formatos de alta calidad donde el video y el audio se transmiten por separado. El script unirá automáticamente ambas pistas si FFmpeg está presente en el sistema.
+- **FFmpeg (Recomendado):** Necesario para descargar formatos de alta calidad (1080p, 4K, etc.) donde el video y el audio se transmiten por separado. El script unirá automáticamente ambas pistas si FFmpeg está presente en el sistema.
+- **Tkinter (Opcional):** Se utiliza para mostrar un selector de carpetas gráfico. Si no está instalado (común en algunas distros de Linux), el script detectará la ausencia y te permitirá introducir la ruta manualmente por consola.
 
 ## Instalación
 
 ### Opción A: Usando [uv](https://github.com/astral-sh/uv) (Recomendado)
-
-Si eres desarrollador o quieres la mejor experiencia:
 
 ```bash
 # Clonar e instalar dependencias
@@ -74,8 +72,8 @@ pytdown
 1. **Introducir URL:** Pega la URL del video.
 2. **Seleccionar Formato:** Elige el ID de la tabla de calidades disponibles.
 3. **Validación:** El script comprobará si tienes `FFmpeg` si el formato elegido requiere fusión de audio/video.
-4. **Destino:** Selecciona la carpeta de descarga (se abrirá un selector nativo).
-5. **Progreso:** Visualiza la descarga en tiempo real con la barra de progreso.
+4. **Destino:** Selecciona la carpeta de descarga mediante el selector gráfico o mediante la terminal (si Tkinter no está disponible).
+5. **Progreso:** Visualiza la descarga con la barra de progreso.
 
 ## Desarrollo
 

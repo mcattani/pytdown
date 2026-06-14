@@ -4,8 +4,6 @@
 import deno
 from typing import Any
 from pathlib import Path
-from tkinter import Tk
-from tkinter.filedialog import askdirectory
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 from rich.progress import (
@@ -20,25 +18,42 @@ console = Console()
 
 def select_download_folder() -> str | None:
     """
-    Muestra una ventana de diálogo para seleccionar carpeta de descarga.
+    Intenta usar Tkinter para seleccionar carpeta de descarga.
+    Si no está instalado, recurre a una entrada de texto por consola.
+    
     Devuelve:
         str -> ruta seleccionada
         None -> si el usuario cancela
     """
-    # Creamos la ventana principal de tkinter
-    root = Tk()
-    
-    # La ocultamos 
-    root.withdraw()
-    
-    # Mostramos el selector de carpeta
-    folder = askdirectory(title="Seleccione carpeta de descarga")
-    
-    # Cerramos tkinter
-    root.destroy()
-    
-    # Devuelve la carpeta elegida o none si el usuario cancela
-    return folder or None
+    try: 
+        from tkinter import Tk
+        from tkinter.filedialog import askdirectory
+
+        root = Tk() # Creamos la ventana principal de tkinter
+        root.withdraw() # La ocultamos 
+        folder = askdirectory(title="Seleccione carpeta de descarga") # Mostramos el selector de carpeta
+        root.destroy() # Cerramos tkinter
+        
+        if folder: return folder
+        # Si el usuario cancela (ctrl+c)
+        return None
+    except (ImportError, ModuleNotFoundError):
+        # Si no se encuentra tkinter o no está instalado, recurre a una entrada de texto por consola.
+        console.print("[yellow]Aviso: No se pudo cargar la interfaz gráfica (Tkinter).[/yellow]")
+        from rich.prompt import Prompt
+        folder_str = Prompt.ask("Introduce la ruta de la carpeta de descarga (deja vacío para la carpeta actual)")
+        
+        # Si no se introduce ninguna ruta usamos la carpeta actual
+        if not folder_str: 
+            return str(Path.cwd())
+        
+        # Validamos la ruta introducida
+        path_obj = Path(folder_str)
+        if path_obj.is_dir(): 
+            return str(path_obj.absolute())
+        else:
+            console.print("[red]La ruta introducida no es una carpeta válida.[/red]")
+            return None
 
 def download_video(url: str, format_id: str, original_lang: str | None = None) -> bool:
     """

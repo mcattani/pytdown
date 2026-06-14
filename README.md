@@ -11,7 +11,8 @@ Una herramienta de línea de comandos (CLI) moderna y potente para descargar vid
 
 - **Paquete Instalable:** Se integra en tu sistema como un comando global (`pytdown`).
 - **Interfaz Enriquecida:** Tablas interactivas y barras de progreso dinámicas mediante la librería `Rich`.
-- **Validación Inteligente:** Selección de formatos restringida a opciones válidas para garantizar descargas exitosas (audio + video.
+- **Idioma:** Filtra y selecciona automáticamente el **lenguaje original** del video, ignorando traducciones o doblajes.
+- **Validación Inteligente:** Selección de formatos restringida a opciones válidas para garantizar descargas exitosas.
 - **Integración con Deno:** Utiliza el runtime de `Deno` para la interpretación avanzada de JavaScript requerida por YouTube.
 - **Arquitectura Robusta:** Estructura de proyecto `src/` siguiendo los estándares modernos de Python.
 
@@ -33,6 +34,7 @@ Una herramienta de línea de comandos (CLI) moderna y potente para descargar vid
 
 - **Python 3.13 o superior**
 - **Deno:** Necesario para que `yt-dlp` procese los scripts de YouTube. Puedes instalarlo desde [deno.com](https://deno.com/).
+- **FFmpeg (Recomendado):** Necesario para descargar formatos de alta calidad donde el video y el audio se transmiten por separado. El script unirá automáticamente ambas pistas si FFmpeg está presente en el sistema.
 
 ## Instalación
 
@@ -71,8 +73,9 @@ pytdown
 
 1. **Introducir URL:** Pega la URL del video.
 2. **Seleccionar Formato:** Elige el ID de la tabla de calidades disponibles.
-3. **Destino:** Selecciona la carpeta de descarga (se abrirá un selector nativo).
-4. **Progreso:** Visualiza la descarga en tiempo real con la barra de progreso.
+3. **Validación:** El script comprobará si tienes `FFmpeg` si el formato elegido requiere fusión de audio/video.
+4. **Destino:** Selecciona la carpeta de descarga (se abrirá un selector nativo).
+5. **Progreso:** Visualiza la descarga en tiempo real con la barra de progreso.
 
 ## Desarrollo
 

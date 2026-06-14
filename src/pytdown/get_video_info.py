@@ -29,6 +29,7 @@ class FormatInfo:
     f_size: str     # Tamaño formateado "Desconocido"
     v_codec: str    # Codec de video simplificado
     a_codec: str    # Codec de audio simplificado
+    has_audio: bool # Indica si el formato tiene audio
 
 @dataclass
 class VideoInfo:
@@ -95,7 +96,7 @@ def get_video_info(url: str) -> VideoInfo | None:
 
     # Ordenamos de mayor a mayor prioridad (reverse=True)
     formatos.sort(key=criterio_de_orden, reverse=True)
-
+    
     # Lista para almacenar los objetos FormatInfo filtrados
     formatos_validos: list[FormatInfo] = []
     # Conjunto para llevar control de lo que ya hemos añadido y evitar duplicados
@@ -113,6 +114,8 @@ def get_video_info(url: str) -> VideoInfo | None:
             fps = formato.get("fps")
             v_codec_simple = simplify_codec(vcodec)
             a_codec_simple = simplify_codec(acodec)
+             # Chequeamos si hay formatos de audio
+            has_audio: bool = acodec != "none"
 
             # Identificador técnico único para evitar mostrar formatos repetidos.
             # Incluimos los FPS para que el usuario pueda elegir entre 30fps, 60fps, etc.
@@ -143,7 +146,8 @@ def get_video_info(url: str) -> VideoInfo | None:
                 ext=str(ext if ext else "N/A").upper(),
                 f_size=f_size_str,
                 v_codec=v_codec_simple,
-                a_codec=a_codec_simple
+                a_codec=a_codec_simple,
+                has_audio=has_audio
             )
             # Agregamos el objeto a nuestra lista de resultados
             formatos_validos.append(format_item)

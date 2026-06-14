@@ -2,8 +2,11 @@ from rich.console import Console
 from rich.table import Table
 from rich.prompt import Prompt
 
-from pytdown.get_video_info import get_video_info, VideoInfo
+from pytdown.get_video_info import get_video_info, VideoInfo, FormatInfo
 from pytdown.download_video import download_video
+
+from pytdown.utils import check_ffmpeg
+
 
 console = Console()
 
@@ -59,6 +62,18 @@ def run_app():
         show_choices=False
     )
     
+    # Buscar el formato seleccionado y comprobar si requiere FFmpeg
+    selected_format: FormatInfo | None = None
+    for item in video.formats:
+        if item.format_id == format_id:
+            selected_format = item
+            break
+    
+    if selected_format and not selected_format.has_audio:
+        if not check_ffmpeg():
+            console.print("[red]No se encontró ffmpeg en el sistema. Es necesario para descargar este formato.[/red]")
+            return
+        
     # Descargar el video y dar feedback final
     if download_video(url, format_id):
         console.print("\n[bold green]Descarga completada[/bold green]")

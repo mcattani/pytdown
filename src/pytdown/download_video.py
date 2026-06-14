@@ -97,7 +97,7 @@ def download_video(url: str, format_id: str) -> bool:
 
     # Configuramos yt-dlp
     ydl_opts: dict[str, Any]= {
-        "format": format_id,
+        "format": f"{format_id}+bestaudio/best",
         "outtmpl": str(Path(download_dir) / "%(title)s.%(ext)s"),
         "progress_hooks": [progress_hook],
         "js_runtimes": {"deno": {"path": deno.find_deno_bin()}},

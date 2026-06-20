@@ -144,7 +144,7 @@ def download_video(url: str, format_id: str, original_lang: str | None = None) -
         return False
     # Captura otros errores
     except Exception as e:
-        console.print(f"[red]Error al descargar el archivo:[/red] {e}")
+        console.print(f"[red]Error inesperado:[/red] {e}")
         return False
 
 if __name__ == "__main__":

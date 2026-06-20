@@ -98,16 +98,17 @@ def get_video_info(url: str) -> VideoInfo | None:
         # Filtramos los videos traducidos (solo formato original)
         lang = formato.get("language")
         is_dubbed = "dubbed" in (formato.get("format_note") or "").lower()
-        
         if (lang and original_lang and lang != original_lang) or is_dubbed:
             continue
 
+        # Obtenemos la resolución y el código del codec
         height = formato.get("height")
         ext = formato.get("ext")
         fps = formato.get("fps")
         v_codec_simple = simplify_codec(vcodec)
         a_codec_simple = simplify_codec(acodec)
-        # Chequeamos si hay formatos de audio
+        
+        # Indica si el formato ya incluye audio
         has_audio: bool = acodec != "none"
 
         # Identificador técnico único para evitar mostrar formatos repetidos.
@@ -120,8 +121,8 @@ def get_video_info(url: str) -> VideoInfo | None:
 
         # El tamaño puede venir en 'filesize' o 'filesize_approx'
         filesize = formato.get("filesize") or formato.get("filesize_approx")
-        # Formateamos el tamaño si lo tenemos, de lo contrario dejamos "Desconocido"
-        f_size_str = format_size(filesize) if filesize else "Desconocido"
+        # Formateamos el tamaño si lo tenemos, de lo contrario dejamos "?"
+        f_size_str = format_size(filesize) if filesize else "?"
         
         # Creamos una instancia de FormatInfo con los datos procesados
         format_item = FormatInfo(
@@ -152,7 +153,7 @@ if __name__ == "__main__":
     if info:
         console.print(f"[bold blue]Título:[/bold blue] {info.title}")
         console.print(f"[bold yellow]Idioma detectado:[/bold yellow] {info.original_lang}\n")
-        console.print(f"{'ID':<10} {'Calidad':<10} {'FPS':<6} {'Ext':<6} {'V-Codec':<10} {'A-Codec':<10} {'Tamaño'}")
+        console.print(f"{'ID':<10} {'Resol.':<10} {'FPS':<6} {'Ext':<6} {'V-Codec':<10} {'A-Codec':<10} {'Tamaño'}")
         console.print("-" * 85)
         for item in info.formats:
             fps_str = str(item.fps) if (item.fps and item.fps > 0) else "N/A"

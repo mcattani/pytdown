@@ -40,7 +40,7 @@ def run_app():
         
         # Si el formato incluye audio, mostramos el código de audio
         if item.has_audio:
-            codec = f"{item.v_codec} / {item.a_codec}"
+            codec = f"{item.v_codec}/{item.a_codec}"
         else:
             codec = item.v_codec
         

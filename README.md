@@ -1,11 +1,13 @@
-# YouTube Video Downloader (CLI)
+# PytDown - Video Downloader (CLI)
 
 [![Python Version](https://img.shields.io/badge/python-3.13%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![yt-dlp](https://img.shields.io/badge/powered%20by-yt--dlp-red)](https://github.com/yt-dlp/yt-dlp)
 [![Rich](https://img.shields.io/badge/UI-Rich-green)](https://github.com/Textualize/rich)
 [![Licencia](https://img.shields.io/badge/licencia-GPL--3.0-blue)](LICENSE)
 
-Una herramienta de línea de comandos (CLI) para descargar videos de YouTube con selección de formatos. Distribuida como un paquete de Python instalable.
+# 🚧 **Este proyecto está en construcción** 🚧
+
+Una herramienta de línea de comandos (CLI) para descargar videos de YouTube (...) con selección de formatos. Distribuida como un paquete de Python instalable.
 
 ## Características Principales
 

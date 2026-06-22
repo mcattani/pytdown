@@ -28,11 +28,11 @@ def run_app():
     # Crear una tabla con los formatos disponibles
     table = Table(title="Formatos disponibles")
     table.add_column("ID", style="cyan")
-    table.add_column("Resol.", style="magenta")
+    table.add_column("Resol.", style="magenta", justify="center")
     table.add_column("FPS", justify="center")
     table.add_column("Ext", style="green")
     table.add_column("Codec")
-    table.add_column("Tamaño", justify="right")
+    table.add_column("Tamaño")
     
     # Guardamos los IDs válidos para validar la entrada
     valid_ids: list[str] = []

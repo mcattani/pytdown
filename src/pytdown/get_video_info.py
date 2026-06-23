@@ -21,14 +21,15 @@ class FormatInfo:
     """
     Clase de datos para representar la información técnica de un formato específico.
     """
-    format_id: str  # ID interno del formato en YouTube
-    calidad: str    # Resolución (ej: 720p)
-    fps: int | None # Cuadros por segundo
-    ext: str        # Extensión del archivo (ej: MP4)
-    f_size: str     # Tamaño formateado "Desconocido"
-    v_codec: str    # Codec de video simplificado
-    a_codec: str    # Codec de audio simplificado
-    has_audio: bool # Indica si el formato tiene audio
+    format_id: str        # ID interno del formato en YouTube
+    calidad: str          # Resolución 
+    fps: int | None       # Cuadros por segundo
+    ext: str              # Extensión del archivo
+    f_size: str           # Tamaño formateado "Desconocido"
+    v_codec: str          # Codec de video simplificado
+    a_codec: str          # Codec de audio simplificado
+    has_audio: bool       # Indica si el formato tiene audio
+    requires_ffmpeg: bool # Indica si el formato requiere ffmpeg
 
 @dataclass
 class VideoInfo:
@@ -110,6 +111,9 @@ def get_video_info(url: str) -> VideoInfo | None:
         
         # Indica si el formato ya incluye audio
         has_audio: bool = acodec != "none"
+        
+        # Los formatos sin audio requieren ffmpeg (se combina video + audio separado)
+        requires_ffmpeg: bool = not has_audio
 
         # Identificador técnico único para evitar mostrar formatos repetidos.
         id_tecnico = (height, ext, v_codec_simple, a_codec_simple, fps)
@@ -123,7 +127,7 @@ def get_video_info(url: str) -> VideoInfo | None:
         filesize = formato.get("filesize") or formato.get("filesize_approx")
         # Formateamos el tamaño si lo tenemos, de lo contrario dejamos "?"
         f_size_str = format_size(filesize) if filesize else "?"
-        
+       
         # Creamos una instancia de FormatInfo con los datos procesados
         format_item = FormatInfo(
             format_id=str(formato.get("format_id", "")),
@@ -133,14 +137,14 @@ def get_video_info(url: str) -> VideoInfo | None:
             f_size=f_size_str,
             v_codec=v_codec_simple,
             a_codec=a_codec_simple,
-            has_audio=has_audio
+            has_audio=has_audio,
+            requires_ffmpeg=requires_ffmpeg
         )
         # Agregamos el objeto a nuestra lista de resultados
         formatos_validos.append(format_item)
     
     # Si no se encontraron formatos válidos, retornamos None
-    if not formatos_validos:
-        return None
+    if not formatos_validos: return None
         
     # Retornamos el objeto VideoInfo incluyendo el idioma original
     return VideoInfo(title=title, formats=formatos_validos, original_lang=original_lang)

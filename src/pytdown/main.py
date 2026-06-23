@@ -34,8 +34,12 @@ def run_app():
     table.add_column("Codec")
     table.add_column("Tamaño")
     
+    # Detectamos FFmpeg UNA sola vez
+    ffmpeg_available = check_ffmpeg()
+
     # Guardamos los IDs válidos para validar la entrada
     valid_ids: list[str] = []
+    
     for item in video.formats:
         
         # Si el formato incluye audio, mostramos el código de audio
@@ -44,19 +48,32 @@ def run_app():
         else:
             codec = item.v_codec
         
+        display_id: str = item.format_id
+        row_style = ""
+
+        # Solo marcamos si requiere ffmpeg Y NO está instalado
+        if item.requires_ffmpeg and not ffmpeg_available:
+            display_id = f"[bold red]* {display_id}[/bold red]"
+            row_style = "dim"
+        
         # Armamos la fila de la tabla
         table.add_row(
-            item.format_id, 
+            display_id,
             item.calidad, 
             str(item.fps) if item.fps is not None else "-",
             item.ext,
             codec,
-            item.f_size
+            item.f_size,
+            style=row_style
         )
         
         valid_ids.append(item.format_id)
         
     console.print(table)
+
+    # Leyenda solo si fmpeg no está instalado
+    if not ffmpeg_available:
+        console.print("[dim]* Requiere ffmpeg para ser descargado[/dim]\n")
     
     # Mostramos la opción de descargar el video
     format_id: str = Prompt.ask(
@@ -74,7 +91,7 @@ def run_app():
             break
     
     # Comprobamos si es necesario ffmpeg para descargar el formato
-    if selected_format and not selected_format.has_audio:
+    if selected_format and selected_format.requires_ffmpeg:
         if not check_ffmpeg():
             console.print("[red]No se encontró ffmpeg en el sistema. Es necesario para descargar este formato.[/red]")
             return

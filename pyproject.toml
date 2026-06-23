@@ -1,6 +1,6 @@
 [project]
 name = "pytdown"
-version = "1.0.1"
+version = "1.0.2"
 description = "PyTDown es una herramienta de línea de comandos para descargar videos de YouTube usando la biblioteca yt-dlp."
 readme = "README.md"
 requires-python = ">=3.13"

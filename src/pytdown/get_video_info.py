@@ -76,7 +76,10 @@ def get_video_info(url: str) -> VideoInfo | None:
         return None
 
     # Extraemos y sanitizamos el título general del video
-    title: str = sanitize_str(info.get("title", "Sin título"))
+    #title: str = sanitize_str(info.get("title", "Sin título"))
+    
+    title: str | None = info.get("title", "Sin título")
+    
     # Idioma original del video para filtrar traducciones
     original_lang = info.get("language")
 

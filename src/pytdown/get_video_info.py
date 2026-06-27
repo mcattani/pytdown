@@ -1,7 +1,7 @@
 # get_video_info.py
 # Este script se encarga de obtener la información de un video de YouTube utilizando la biblioteca yt_dlp.
 
-from pytdown.utils import format_size, sanitize_str, simplify_codec
+from pytdown.utils import format_size, simplify_codec
 from typing import Any
 from dataclasses import dataclass
 from yt_dlp import YoutubeDL
@@ -78,13 +78,14 @@ def get_video_info(url: str) -> VideoInfo | None:
     # Extraemos y sanitizamos el título general del video
     #title: str = sanitize_str(info.get("title", "Sin título"))
     
+    # Si no hay título, devolvemos "Sin título"
     title: str | None = info.get("title", "Sin título")
     
     # Idioma original del video para filtrar traducciones
     original_lang = info.get("language")
 
     # 'formats' contiene una lista de diccionarios con cada calidad/tipo disponible
-    formatos: list[dict[str, Any]] = info.get("formats", [])
+    formatos: list[dict[str, Any]] | None= info.get("formats", [])
     
     formatos_validos: list[FormatInfo] = []
     vistos: set[tuple[Any, ...]] = set()

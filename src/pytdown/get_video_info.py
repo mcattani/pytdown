@@ -74,10 +74,7 @@ def get_video_info(url: str) -> VideoInfo | None:
     # Si por alguna razón info viene vacío, retornamos None
     if not info:
         return None
-
-    # Extraemos y sanitizamos el título general del video
-    #title: str = sanitize_str(info.get("title", "Sin título"))
-    
+   
     # Si no hay título, devolvemos "Sin título"
     title: str | None = info.get("title", "Sin título")
     

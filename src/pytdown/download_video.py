@@ -12,6 +12,7 @@ from rich.progress import (
     DownloadColumn,
     TextColumn,
 )
+from pytdown.utils import truncate_filename, sanitize_str
 from rich.console import Console
 
 console = Console()
@@ -55,19 +56,24 @@ def select_download_folder() -> str | None:
             console.print("[red]La ruta introducida no es una carpeta válida.[/red]")
             return None
 
-def download_video(url: str, format_id: str, original_lang: str | None = None) -> bool:
+def download_video(url: str, format_id: str, title: str, original_lang: str | None = None) -> bool:
     """
     Descarga un video usando yt-dlp.
 
     Parámetros:
         url: URL del video
         format_id: ID del formato elegido
+        title: Título original del video (será sanitizado y truncado)
         original_lang: Código del idioma original del video (opcional)
 
     Devuelve:
         True  -> descarga exitosa
         False -> error o cancelación
     """
+    # Sanitizamos y truncamos el título para usarlo como nombre de archivo
+    sanitized_title = sanitize_str(title)
+    filename = truncate_filename(sanitized_title)
+    
     # Solicitamos la carpeta destino y validamos
     download_dir = select_download_folder()
     if not download_dir: 
@@ -121,7 +127,7 @@ def download_video(url: str, format_id: str, original_lang: str | None = None) -
     # Configuramos yt-dlp
     ydl_opts: dict[str, Any]= {
         "format": format_spec,
-        "outtmpl": str(Path(download_dir) / "%(title)s.%(ext)s"),
+        "outtmpl": str(Path(download_dir) / f"{filename}.%(ext)s"),
         "progress_hooks": [progress_hook],
         "js_runtimes": {"deno": {"path": deno.find_deno_bin()}},
         "quiet": True,
@@ -152,4 +158,4 @@ if __name__ == "__main__":
     #print(select_download_folder())
     
     URL_PRUEBA: str = "https://www.youtube.com/watch?v=sPQhTXeoiw0"
-    download_video(URL_PRUEBA, "137", "es")
+    download_video(URL_PRUEBA, "137", "Título del Video de Prueba", "es")

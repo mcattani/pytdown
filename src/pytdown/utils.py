@@ -40,20 +40,42 @@ def sanitize_str(string: str) -> str:
 
 def truncate_filename(filename: str, max_length: int = 128) -> str:
     """
-    Reduce la longitud del nombre de archivo si es muy largo conservando la extensión
+    Trunca un nombre de archivo conservando la extensión si es necesario.
+    
+    Algoritmo:
+    - Si el nombre está dentro del límite, se devuelve sin cambios
+    - Si excede el límite, se trunca el nombre base agregando "..." antes de la extensión
+    - La extensión siempre se preserva intacta
+    - Si no hay espacio ni para "...", se trunca todo el nombre
+    
+    Args:
+        filename: nombre del archivo (ej: "Mi_Video_Largo.mp4")
+        max_length: longitud máxima en caracteres (por defecto 128, suficiente para NTFS/ext4)
+    
+    Returns:
+        Nombre truncado si es necesario, o el original si está dentro del límite
+    
+    Ejemplos:
+        >>> truncate_filename("Video.mp4", 128)
+        'Video.mp4'
+        >>> truncate_filename("A" * 200 + ".mp4", 128)
+        'AAAA...mp4'  # El nombre base se trunca, la extensión se preserva
     """
     # Separamos el nombre de archivo y la extensión
     name, ext = os.path.splitext(filename)
     
-    # Si la extensión es mayor que el máximo permitido, devolvemos el nombre de archivo sin cambios
+    # Si está dentro del límite, no hacemos nada
     if len(filename) <= max_length:
         return filename
     
-    available_space = max_length - len(name)
-         
+    # Calculamos cuánto espacio disponible hay para el nombre base (restando la extensión)
+    available_space = max_length - len(ext)
+    
+    # Si no hay espacio para "...", se trunca todo el nombre
     if available_space <= 3:
         return filename[:max_length]
     
+    # Truncamos el nombre base dejando espacio para "..." y la extensión
     return name[:available_space - 3] + "..." + ext
         
 

@@ -106,9 +106,9 @@ def run_app():
         if not check_ffmpeg():
             console.print("[red]No se encontró ffmpeg en el sistema. Es necesario para descargar este formato.[/red]")
             return
-        
-    # Descargar el video pasando el idioma original
-    if download_video(url, format_id, video.original_lang):
+    
+    # Descargar el video pasando el título, formato e idioma original
+    if download_video(url, format_id, video.title, video.original_lang):
         console.print("\n[bold green]Descarga completada[/bold green]")
     else:
         console.print("\n[bold red]La descarga no se completó.[/bold red]")

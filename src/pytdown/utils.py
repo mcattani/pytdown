@@ -1,6 +1,7 @@
 # utils.py
 # Conjunto de funciones útiles.
 
+import os
 import re
 import time
 from functools import wraps 
@@ -36,6 +37,25 @@ def sanitize_str(string: str) -> str:
     # Reemplaza múltiples espacios por uno solo y quita espacios al inicio y al final
     clean_name = re.sub(r'\s+', ' ', clean_name).strip()
     return clean_name
+
+def truncate_filename(filename: str, max_length: int = 128) -> str:
+    """
+    Reduce la longitud del nombre de archivo si es muy largo conservando la extensión
+    """
+    # Separamos el nombre de archivo y la extensión
+    name, ext = os.path.splitext(filename)
+    
+    # Si la extensión es mayor que el máximo permitido, devolvemos el nombre de archivo sin cambios
+    if len(filename) <= max_length:
+        return filename
+    
+    available_space = max_length - len(name)
+         
+    if available_space <= 3:
+        return filename[:max_length]
+    
+    return name[:available_space - 3] + "..." + ext
+        
 
 def simplify_codec(codec: Any) -> str:
     """

@@ -7,15 +7,18 @@
 
 # 🚧 **Este proyecto está en construcción** 🚧
 
-Una herramienta de línea de comandos (CLI) para descargar videos de YouTube (...) con selección de formatos. Distribuida como un paquete de Python instalable.
+Una herramienta de línea de comandos (CLI) para descargar videos de **YouTube, Instagram y Facebook** con selección inteligente de formatos. Distribuida como un paquete de Python instalable.
+
+**Versión:** 1.2.0
 
 ## Características Principales
 
 - **Paquete Instalable:** Se integra en tu sistema como un comando global (`pytdown`).
 - **Interfaz Enriquecida:** Tablas interactivas y barras de progreso dinámicas mediante la librería `Rich`.
 - **Idioma:** Filtra y selecciona automáticamente el **lenguaje original** del video, ignorando traducciones o doblajes.
+- **Multi-plataforma:** Soporta YouTube, Instagram y Facebook con formatos optimizados para cada plataforma.
 - **Validación Inteligente:** Selección de formatos restringida a opciones válidas para garantizar descargas exitosas.
-- **Integración con Deno:** Utiliza el runtime de `Deno` para la interpretación avanzada de JavaScript requerida por YouTube.
+- **Integración con Deno:** Utiliza el runtime de `Deno` para la interpretación avanzada de JavaScript requerida por estas plataformas.
 
 ## Estructura del Proyecto
 
@@ -71,8 +74,8 @@ Una vez instalado, simplemente ejecuta el comando desde cualquier terminal:
 pytdown
 ```
 
-1. **Introducir URL:** Pega la URL del video.
-2. **Seleccionar Formato:** Elige el ID de la tabla de calidades disponibles.
+1. **Introducir URL:** Pega la URL del video (YouTube, Instagram o Facebook).
+2. **Seleccionar Formato:** Elige el ID de la tabla de calidades disponibles (solo formatos compatibles).
 3. **Validación:** El script comprobará si tienes `FFmpeg` si el formato elegido requiere fusión de audio/video.
 4. **Destino:** Selecciona la carpeta de descarga mediante el selector gráfico o mediante la terminal (si Tkinter no está disponible).
 5. **Progreso:** Visualiza la descarga con la barra de progreso.

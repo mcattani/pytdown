@@ -9,6 +9,16 @@ from pytdown.utils import check_ffmpeg
 
 console = Console()
 
+def create_format_table(formats: list[FormatInfo]) -> dict[str, str]:
+    """
+    Crea un diccionario que relaciona el número de formato con su ID de yt-dlp
+    """
+    format_map = {}
+    for index, item in enumerate(formats, start=1):
+        format_map[str(index)] = item.format_id
+    return format_map
+    
+
 def run_app():
     url = Prompt.ask("[bold green]Introduce la URL del video[/bold green]")
     
@@ -22,12 +32,15 @@ def run_app():
     # Si no se pudo obtener la información del video, no continuamos
     if not video: 
         return
+    
+    # Creamos un diccionario para mapear el número de formato con su ID de yt-dlp
+    format_map = create_format_table(video.formats)
 
     console.print(f"\n[bold blue]Título:[/bold blue] {video.title}")
     
     # Crear una tabla con los formatos disponibles
     table = Table(title="Formatos disponibles")
-    table.add_column("ID", style="cyan")
+    table.add_column("#", style="cyan", justify="center")
     table.add_column("Resol.", style="magenta", justify="center")
     table.add_column("FPS", justify="center")
     table.add_column("Ext", style="green")
@@ -37,10 +50,7 @@ def run_app():
     # Detectamos FFmpeg UNA sola vez
     ffmpeg_available = check_ffmpeg()
 
-    # Guardamos los IDs válidos para validar la entrada
-    valid_ids: list[str] = []
-    
-    for item in video.formats:
+    for index, item in enumerate(video.formats, start=1):
         
         # Si el formato incluye audio, mostramos el código de audio
         if item.has_audio:
@@ -48,7 +58,7 @@ def run_app():
         else:
             codec = item.v_codec
         
-        display_id: str = item.format_id
+        display_id: str = str(index)
         row_style = ""
 
         # Solo marcamos si requiere ffmpeg Y NO está instalado
@@ -67,8 +77,6 @@ def run_app():
             style=row_style
         )
         
-        valid_ids.append(item.format_id)
-        
     console.print(table)
 
     # Leyenda solo si fmpeg no está instalado
@@ -76,11 +84,14 @@ def run_app():
         console.print("[dim]* Requiere ffmpeg para ser descargado[/dim]\n")
     
     # Mostramos la opción de descargar el video
-    format_id: str = Prompt.ask(
-        "[bold green]Seleccione el ID del formato[/bold green]",
-        choices=valid_ids,
+    option: str = Prompt.ask(
+        "[bold green]Seleccione una opción[/bold green]",
+        choices=list(format_map.keys()),
         show_choices=False
     )
+    
+    # Obtenemos el formato seleccionado
+    format_id = format_map[option]
     
     selected_format: FormatInfo | None = None
     

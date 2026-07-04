@@ -53,11 +53,11 @@ wheels = [
 
 [[package]]
 name = "certifi"
-version = "2026.5.20"
+version = "2026.6.17"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f3/ce/ee2ecad540810a79593028e88299baeae54d346cc7a0d94b6199988b89b1/certifi-2026.5.20.tar.gz", hash = "sha256:69dea482ab64caa7b9f6aba1c6bf48bb6a5448d1c0f1b17ab42ad8c763a5344d", size = 135422, upload-time = "2026-05-20T11:46:50.073Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c9/c7/424b75da314c1045981bd9777432fad05a9e0c69daa4ed7e308bbaffe405/certifi-2026.6.17.tar.gz", hash = "sha256:024c88eeec92ca068db80f02b8b07c9cef7b9fe261d1d535abfd5abd6f6af432", size = 134594, upload-time = "2026-06-17T10:31:07.894Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/59/8c/57e832b7af6d7c5abe66eb3fbe3a3a32f4d11ea23a1aa7131371035be991/certifi-2026.5.20-py3-none-any.whl", hash = "sha256:3c52e209ba0a4ad7aebe60436a4ab349c39e1e602e8c134221e546902ad25897", size = 134134, upload-time = "2026-05-20T11:46:48.578Z" },
+    { url = "https://files.pythonhosted.org/packages/ef/2f/c5464532e965badff2f4c4c1a3a83f5697f0d7c407ed0cda44aaa99bb451/certifi-2026.6.17-py3-none-any.whl", hash = "sha256:2227dcbaafe0d2f59279d1762ddddc37783ed4354594f194ffc31d20f41fc3db", size = 133289, upload-time = "2026-06-17T10:31:06.348Z" },
 ]
 
 [[package]]
@@ -164,15 +164,15 @@ wheels = [
 
 [[package]]
 name = "deno"
-version = "2.8.2"
+version = "2.9.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d4/b7/9454029a6d509b3be48c34acb6a2d29477e488112ac8075877315896222a/deno-2.8.2.tar.gz", hash = "sha256:d97010c6066a4a8975dd6cb447e214db33a4b0151443a73f740b3d63935c4abe", size = 8166, upload-time = "2026-06-03T13:52:07.336Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a6/10/9111c76994f96cafc5d3216744fc7498dec91ec5dbc2b21dccb242eb423c/deno-2.9.1.tar.gz", hash = "sha256:6ff26ea8d015f39d907a5f1f2728d0a67de3e52ad79a893daa6c2b6bb774eff8", size = 8166, upload-time = "2026-07-01T16:38:11.268Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/86/13/b7039014bcad913b5d2a26f5ed7dfc67eaedace97e8f937cb2e1a83974c4/deno-2.8.2-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:f82ac8ee9b8faba70bbec1f96f286715a39a66ce1682b3b6a21c576595bd3249", size = 42277702, upload-time = "2026-06-03T13:51:51.681Z" },
-    { url = "https://files.pythonhosted.org/packages/92/51/316121e7402ca738d409382b519253b39502d1982446f8447bf3ca0be1ec/deno-2.8.2-py3-none-macosx_11_0_arm64.whl", hash = "sha256:4f3801521040c2fc9a0cf9a256ddf8ff7782016895d7d1e1446358352e1f123b", size = 38067105, upload-time = "2026-06-03T13:51:54.841Z" },
-    { url = "https://files.pythonhosted.org/packages/d7/77/0c4d95f995548a86cdf3d8298880ced7c2024e6340703d4b1bb64f7dc4f4/deno-2.8.2-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:3fba50581aecf9a572fbcc0399792de68e636d05716bede17c0cbc5fde4d41b4", size = 42048738, upload-time = "2026-06-03T13:51:58.444Z" },
-    { url = "https://files.pythonhosted.org/packages/31/41/6ddd61f17cc5f68dff812e96bfbfd18e7c79b735ed40a1834e5c32bb557e/deno-2.8.2-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:a3610b2ca145358f6fdfeedc6a073e5995ffb2dc19d7f965c4c1f5e0312a9fb3", size = 43761818, upload-time = "2026-06-03T13:52:01.863Z" },
-    { url = "https://files.pythonhosted.org/packages/ff/f9/6f24afd6c2f91dd709d43dfd7cb9613c61387413b43341916f3ea1e54f2e/deno-2.8.2-py3-none-win_amd64.whl", hash = "sha256:c850189d24b8c924412a760aebbff9f9da4961e6a63c132ad135118dd95db8a6", size = 41481437, upload-time = "2026-06-03T13:52:05.026Z" },
+    { url = "https://files.pythonhosted.org/packages/20/2f/e36e8c5fc6a115f80866f891cafabc272cebb3ca5aa5aa0c22ecc8dcda4b/deno-2.9.1-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:b6dad51f76d2e4c1641b3bb607d74bede6b8b6ee9f3dd8b1843668c9a9242d51", size = 42326438, upload-time = "2026-07-01T16:37:57.076Z" },
+    { url = "https://files.pythonhosted.org/packages/93/2c/f36273086056c0cadb607e7024032393627dc9d127bbb151e8fd15afc167/deno-2.9.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:2093a3caf68b39b5fb6b4ad7a15efe8862a9b8c637467278a5a2beac6f8bde4d", size = 37976869, upload-time = "2026-07-01T16:38:00.076Z" },
+    { url = "https://files.pythonhosted.org/packages/59/95/bc958662607300f290c5d77e7a8f5ba22d59ed8cbe9be4088f46f598f463/deno-2.9.1-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:5924c9e1c7ae63e1c103412c7a7fbb0d72dc8d5b44ed969c4365b7db29b73cba", size = 42045727, upload-time = "2026-07-01T16:38:02.905Z" },
+    { url = "https://files.pythonhosted.org/packages/96/55/b5cc71d6f41cc2aa3662e25783f4254b9f2f440d5fc3bfcdf07f101b5c66/deno-2.9.1-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:c73797b2319a5ac6749a715468ad95ef89a1f5c791499042d38ba0f52ecbe0fb", size = 43904159, upload-time = "2026-07-01T16:38:05.914Z" },
+    { url = "https://files.pythonhosted.org/packages/58/4c/19c6782e7b518f2d6338c54253c372be0628673f9f18fd88956a811f30de/deno-2.9.1-py3-none-win_amd64.whl", hash = "sha256:1ae3d509073d561b57005b530532f68c8beb19d140cb7d5a18c6066249e1a470", size = 41612042, upload-time = "2026-07-01T16:38:08.793Z" },
 ]
 
 [[package]]
@@ -207,11 +207,11 @@ wheels = [
 
 [[package]]
 name = "mutagen"
-version = "1.47.0"
+version = "1.48.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/81/e6/64bc71b74eef4b68e61eb921dcf72dabd9e4ec4af1e11891bbd312ccbb77/mutagen-1.47.0.tar.gz", hash = "sha256:719fadef0a978c31b4cf3c956261b3c58b6948b32023078a2117b1de09f0fc99", size = 1274186, upload-time = "2023-09-03T16:33:33.411Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/df/70/1675da133ea92227da41bf5b24e1c66be597ff736a1533ade41da986852f/mutagen-1.48.1.tar.gz", hash = "sha256:8f95637ab9f6f305cec6bd1294e197debe207998e3e068596563c74f86b0a173", size = 1276978, upload-time = "2026-06-25T09:47:32.443Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b0/7a/620f945b96be1f6ee357d211d5bf74ab1b7fe72a9f1525aafbfe3aee6875/mutagen-1.47.0-py3-none-any.whl", hash = "sha256:edd96f50c5907a9539d8e5bba7245f62c9f520aef333d13392a79a4f70aca719", size = 194391, upload-time = "2023-09-03T16:33:29.955Z" },
+    { url = "https://files.pythonhosted.org/packages/47/d8/a29e4e3991765e7ce4ed1f7e4074fe1ba9da03e0048639734de60f9cadb9/mutagen-1.48.1-py3-none-any.whl", hash = "sha256:4f077fe87d3fc7fba259aa63d8c026b18382ca6a42ef37c61e16f1b1b5b82fe7", size = 195706, upload-time = "2026-06-25T09:47:30.296Z" },
 ]
 
 [[package]]
@@ -354,16 +354,16 @@ wheels = [
 
 [[package]]
 name = "yt-dlp"
-version = "2026.3.17"
+version = "2026.6.9"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/8b/34/7c6b4e3f89cb6416d2cd7ab6dab141a1df97ab0fb22d15816db2c92148c9/yt_dlp-2026.3.17.tar.gz", hash = "sha256:ba7aa31d533f1ffccfe70e421596d7ca8ff0bf1398dc6bb658b7d9dec057d2c9", size = 3119221, upload-time = "2026-03-17T23:43:00.244Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/88/a4/1b0979d28f87774bb67fbbc66bce44f9dd1aa0e547a99e22985fac945c33/yt_dlp-2026.6.9.tar.gz", hash = "sha256:d50fcb95f48d61bedde33e408c1881d4c279e51c31354a599ce09e96ba0f4b86", size = 3030590, upload-time = "2026-06-09T23:27:14.831Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/13/5093bcb954878e50f7217fd2ab94282b53934022e4e4a03265582da83bf5/yt_dlp-2026.3.17-py3-none-any.whl", hash = "sha256:32992db94303a8a5d211a183f2174834fe7f8c29d83ed2e7a324eae97a8f26d8", size = 3315134, upload-time = "2026-03-17T23:42:57.863Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/ee/188a3dadf9dfdac713243521f919feca1cd091d4358c9ea7e8ebb710a7cc/yt_dlp-2026.6.9-py3-none-any.whl", hash = "sha256:442ba4c75724b9496144c8434b617962ee08d0ee7c26ec663848fe9b78d5a3e4", size = 3169035, upload-time = "2026-06-09T23:27:12.58Z" },
 ]
 
 [package.optional-dependencies]
 default = [
-    { name = "brotli", marker = "implementation_name == 'cpython'" },
+    { name = "brotli", marker = "implementation_name == 'cpython' and sys_platform != 'ios'" },
     { name = "brotlicffi", marker = "implementation_name != 'cpython'" },
     { name = "certifi" },
     { name = "mutagen" },

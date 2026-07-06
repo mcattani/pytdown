@@ -9,7 +9,7 @@
 
 Una herramienta de línea de comandos (CLI) para descargar videos de **YouTube, Instagram y Facebook** con selección inteligente de formatos. Distribuida como un paquete de Python instalable.
 
-**Versión:** 1.2.0
+![imagen de muestra](https://i.ibb.co/zTxh4YJ8/video-propio-cffmpeg.png)
 
 ## Características Principales
 
@@ -40,6 +40,8 @@ Una herramienta de línea de comandos (CLI) para descargar videos de **YouTube, 
 - **Deno:** Necesario para que `yt-dlp` procese los scripts de YouTube. Puedes instalarlo desde [deno.com](https://deno.com/).
 - **FFmpeg (Recomendado):** Necesario para descargar formatos de alta calidad (1080p, 4K, etc.) donde el video y el audio se transmiten por separado. El script unirá automáticamente ambas pistas si FFmpeg está presente en el sistema.
 - **Tkinter (Opcional):** Se utiliza para mostrar un selector de carpetas gráfico. Si no está instalado (común en algunas distros de Linux), el script detectará la ausencia y te permitirá introducir la ruta manualmente por consola.
+
+![imagen de muestra 2](https://i.ibb.co/27NRCkZx/video-propio-sffmpeg.png)
 
 ## Instalación
 
@@ -80,15 +82,7 @@ pytdown
 4. **Destino:** Selecciona la carpeta de descarga mediante el selector gráfico o mediante la terminal (si Tkinter no está disponible).
 5. **Progreso:** Visualiza la descarga con la barra de progreso.
 
-## Desarrollo
-
-Para contribuir o modificar el proyecto:
-1. Crea un entorno virtual con `uv venv` o `python -m venv .venv`.
-2. Las dependencias se gestionan a través de `pyproject.toml`. No se requiere `requirements.txt`.
-
 ---
-
-### Soporte y Feedback
 
 Desarrollado por [The Nerdy Apprentice](https://thenerdyapprentice.blogspot.com/).
 

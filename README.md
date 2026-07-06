@@ -49,7 +49,7 @@ Una herramienta de línea de comandos (CLI) para descargar videos de **YouTube, 
 
 ```bash
 # Clonar e instalar dependencias
-git clone [URL DEL REPOSITORIO]
+git clone https://github.com/mcattani/pytdown.git
 cd youtube_downloader
 uv sync
 

@@ -63,7 +63,7 @@ uv tool install .
 ### Opción B: Usando pip (Tradicional)
 
 ```bash
-git clone [URL DEL REPOSITORIO]
+git clone https://github.com/mcattani/pytdown.git
 cd youtube_downloader
 pip install .
 ```

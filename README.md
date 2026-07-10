@@ -5,8 +5,6 @@
 [![Rich](https://img.shields.io/badge/UI-Rich-green)](https://github.com/Textualize/rich)
 [![Licencia](https://img.shields.io/badge/licencia-GPL--3.0-blue)](LICENSE)
 
-# 🚧 **Este proyecto está en construcción** 🚧
-
 Una herramienta de línea de comandos (CLI) para descargar videos de **YouTube, Instagram y Facebook** con selección inteligente de formatos. Distribuida como un paquete de Python instalable.
 
 ![imagen de muestra](https://i.ibb.co/zTxh4YJ8/video-propio-cffmpeg.png)

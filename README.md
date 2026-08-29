@@ -56,9 +56,29 @@ uv run pytdown
 
 # O instalar como herramienta global en tu sistema
 uv tool install .
+
+# Si ya está instalado y quieres actualizarlo a la versión local actual
+uv tool uninstall pytdown
+uv tool install .
 ```
 
 ### Opción B: Usando pip (Tradicional)
+
+```bash
+git clone https://github.com/mcattani/pytdown.git
+cd youtube_downloader
+python -m pip install --upgrade .
+```
+
+> Si ya tenías el comando `pytdown` instalado globalmente, puedes reiniciarlo con `python -m pip install --upgrade .` o reinstalarlo con `uv tool uninstall pytdown` y luego `uv tool install .` para asegurar que usa la nueva versión.
+
+### Actualizar una instalación global existente
+
+```bash
+cd youtube_downloader
+uv tool uninstall pytdown
+uv tool install .
+```
 
 ```bash
 git clone https://github.com/mcattani/pytdown.git
